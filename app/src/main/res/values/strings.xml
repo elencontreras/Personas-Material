@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">PersonasMaterial</string>
+    <string name="action_settings">Settings</string>
+    <string name="nombre">Nombre</string>
+    <string name="crear_persona">Crear Persona</string>
+    <string name="apellido">Apellido</string>
+    <string name="guardar">Guardar</string>
+    <string name="limpiar">Limpiar</string>
+    <string name="msjGuardar">Persona guardada exitosamente</string>
+</resources>
