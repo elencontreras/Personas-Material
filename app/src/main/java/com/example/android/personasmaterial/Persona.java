@@ -25,6 +25,7 @@ public class Persona {
         this.apellido = apellido;
     }
 
+
     public int getFoto() {
         return foto;
     }
