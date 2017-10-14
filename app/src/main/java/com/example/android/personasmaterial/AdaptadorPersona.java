@@ -21,10 +21,13 @@ public class AdaptadorPersona extends RecyclerView.Adapter<AdaptadorPersona.Pers
 
     private ArrayList<Persona> personas;
     private Resources res;
+    private OnPersonaClickListener clickListener;
 
-    public AdaptadorPersona(Context contexto, ArrayList<Persona> personas) {
+
+    public AdaptadorPersona(Context contexto, ArrayList<Persona> personas, OnPersonaClickListener clickListener) {
         this.personas = personas;
         this.res =contexto.getResources();
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -37,9 +40,19 @@ public class AdaptadorPersona extends RecyclerView.Adapter<AdaptadorPersona.Pers
     public void onBindViewHolder(AdaptadorPersona.PersonaViewHolder holder, int position) {
         final Persona p = personas.get(position);
         holder.foto.setImageDrawable(ResourcesCompat.getDrawable(res,p.getFoto(),null));
+        holder.cedula.setText(p.getCedula());
         holder.nombre.setText(p.getNombre());
         holder.apellido.setText(p.getApellido());
-    }
+
+        holder.v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickListener.onPersonaClick(p);
+            }
+        });
+
+        }
+
 
     @Override
     public int getItemCount() {
@@ -50,14 +63,20 @@ public class AdaptadorPersona extends RecyclerView.Adapter<AdaptadorPersona.Pers
         private ImageView foto;
         private TextView nombre;
         private TextView apellido;
+        private TextView cedula;
         private View v;
 
         public PersonaViewHolder(View itemView){
             super(itemView);
             v = itemView;
+            cedula = (TextView)itemView.findViewById(R.id.lblCedula);
             foto = (ImageView)itemView.findViewById(R.id.imgFoto);
             nombre = (TextView)itemView.findViewById(R.id.lblNombre);
             apellido = (TextView)itemView.findViewById(R.id.lblApellido);
         }
+    }
+
+    public interface OnPersonaClickListener{
+        void onPersonaClick(Persona p);
     }
 }

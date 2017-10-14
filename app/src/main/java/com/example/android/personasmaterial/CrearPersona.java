@@ -8,13 +8,18 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 
 public class CrearPersona extends AppCompatActivity {
-    private EditText cajaNombre, cajaApellido;
-    private TextInputLayout icajaNombre, icajaApellido;
+    private EditText txtNombre, txtApellido, txtCedula;
+    private TextInputLayout cajaNombre, cajaApellido, cajaCedula;
+    private Spinner SpinnerSexo;
+    private String [] opc;
+    private ArrayAdapter<String> adapter;
     private ArrayList<Integer> fotos;
     private Resources res;
 
@@ -25,12 +30,23 @@ public class CrearPersona extends AppCompatActivity {
 
         res =this.getResources();
 
+        txtCedula = (EditText)findViewById(R.id.txtCedula);
+        txtNombre = (EditText)findViewById(R.id.txtNombre);
+        txtApellido = (EditText)findViewById(R.id.txtApellido);
+        cajaCedula = (TextInputLayout)findViewById(R.id.cajaCedula);
+        cajaNombre = (TextInputLayout) findViewById(R.id.cajaNombre);
+        cajaApellido = (TextInputLayout) findViewById(R.id.cajaApellido);
+        SpinnerSexo = (Spinner)findViewById(R.id.cmbSexo);
+        opc = res.getStringArray(R.array.sexo);
 
-        cajaNombre = (EditText)findViewById(R.id.txtNombre);
-        cajaApellido = (EditText)findViewById(R.id.txtApellido);
-        icajaNombre = (TextInputLayout) findViewById(R.id.cajaNombre);
-        icajaApellido = (TextInputLayout) findViewById(R.id.cajaApellido);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opc);
+        SpinnerSexo.setAdapter(adapter);
 
+        iniciarFotos();
+
+    }
+
+    public void iniciarFotos(){
         fotos = new ArrayList<>();
         fotos.add(R.drawable.images);
         fotos.add(R.drawable.images2);
@@ -38,8 +54,13 @@ public class CrearPersona extends AppCompatActivity {
     }
 
     public void guardar(View v){
-
-        Persona p = new Persona(Metodos.fotoAleatoria(fotos),cajaNombre.getText().toString(),cajaApellido.getText().toString());
+        String cedula, nombre, apellido;
+        int sexo;
+        cedula = txtCedula.getText().toString();
+        nombre = txtNombre.getText().toString();
+        apellido = txtApellido.getText().toString();
+        sexo = SpinnerSexo.getSelectedItemPosition();
+        Persona p = new Persona(Metodos.fotoAleatoria(fotos), cedula, nombre, apellido, sexo);
         p.guardar();
         Snackbar.make(v, res.getString(R.string.msjGuardar), Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
@@ -47,9 +68,12 @@ public class CrearPersona extends AppCompatActivity {
     }
 
     public void limpiar(View v){
-        cajaNombre.setText("");
-        cajaApellido.setText("");
-        cajaNombre.requestFocus();
+        txtCedula.setText("");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        SpinnerSexo.setSelection(0);
+        txtCedula.requestFocus();
+
     }
 
     public void onBackPressed(){
